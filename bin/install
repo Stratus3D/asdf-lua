@@ -119,7 +119,7 @@ get_target() {
     os=$(uname -s)
 
     # If on OSX (Darwin) then the target is macosx
-    if [ os = "Darwin" ]; then
+    if [ $os = "Darwin" ]; then
         echo "macosx"
     else # Otherwise we assume Linux
         echo "linux"
