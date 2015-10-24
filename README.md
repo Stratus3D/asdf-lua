@@ -15,10 +15,11 @@ Check [asdf](https://github.com/HashNuke/asdf) readme for instructions on how to
 
 Feel free to create an issue or pull request if you find a bug.
 
-## TODO
+## Issues
 
-* Add LuaRocks to installs
-* Add support for LuaJIT
+* LuaRocks is not apart of installs
+* No support for LuaJIT
+* Lua versions 5.1 and earlier do not install
 
 ## License
 MIT License
