@@ -21,6 +21,8 @@ install_lua() {
         cd $(dirname $source_path)
         tar zxvf $source_path || exit 1
 
+        cd $(untar_path $install_type $version $tmp_download_dir)
+
         # Target is OS-specific
         target=$(get_target)
 
@@ -28,6 +30,7 @@ install_lua() {
         make $target || exit 1
         make test || exit 1
         make local || exit 1
+        cp -r install/* $install_path || exit 1
     )
 }
 
