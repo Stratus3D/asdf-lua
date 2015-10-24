@@ -22,10 +22,10 @@ install_lua() {
         tar zxvf $source_path || exit 1
 
         # Target is OS-specific
-        TARGET=get_target
+        target=$(get_target)
 
         # Build Lua
-        make $TARGET || exit 1
+        make $target || exit 1
         make test || exit 1
         make local || exit 1
     )
