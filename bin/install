@@ -116,7 +116,7 @@ get_lua_type() {
 }
 
 get_target() {
-    os=$(uname -o)
+    os=$(uname -s)
 
     # If on OSX (Darwin) then the target is macosx
     if [ os = "Darwin" ]; then
