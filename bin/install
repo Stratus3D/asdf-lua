@@ -35,7 +35,7 @@ download_source() {
     local install_type=$1
     local version=$2
     local download_path=$3
-    local $download_url=$(get_download_url $install_type $version)
+    local download_url=$(get_download_url $install_type $version)
 
     curl -Lo $download_path -C - $download_url
 }
@@ -48,7 +48,7 @@ get_download_file_path() {
     local lua_type=$(get_lua_type $version)
     local lua_version=$(get_lua_version $version)
 
-    if [ "${lua_type}" = "Lua"]; then
+    if [ "${lua_type}" = "Lua" ]; then
         local pkg_name="lua-${lua_version}.tar.gz"
     fi
 
