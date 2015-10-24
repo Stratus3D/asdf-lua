@@ -21,8 +21,13 @@ install_lua() {
         cd $(dirname $source_path)
         tar zxvf $source_path || exit 1
 
-        # TODO: Finish script 
+        # Target is OS-specific
+        TARGET=get_target
 
+        # Build Lua
+        make $TARGET || exit 1
+        make test || exit 1
+        make local || exit 1
     )
 }
 
@@ -51,7 +56,21 @@ get_download_file_path() {
 }
 
 untar_path() {
+    local install_type=$1
+    local version=$2
+    local tmp_download_dir=$3
 
+    local lua_type=$(get_lua_type $version)
+    local lua_version=$(get_lua_version $version)
+
+    if [ "${lua_type}" = "Lua" ]; then
+        local dir_name="lua-${lua_version}"
+    fi
+
+    # TODO for LuaJIT
+    # elif [ "${lua_type}" = "LuaJIT" ]; then
+
+    echo "$tmp_download_dir/$dir_name"
 }
 
 get_download_url() {
@@ -66,12 +85,6 @@ get_download_url() {
 
   # TODO for LuaJIT
   # elif [ "${lua_type}" = "LuaJIT" ]; then
-}
-
-construct_configure_options() {
-}
-
-os_based_configure_options() {
 }
 
 get_lua_version() {
@@ -90,12 +103,23 @@ get_lua_version() {
     fi
 }
 
-get_ruby_type() {
+get_lua_type() {
     IFS='-' read -a version_info <<< "$1"
     if [ "${version_info[0]}" = "LuaJIT" ]; then
         echo "LuaJIT"
     else
         echo "Lua"
+    fi
+}
+
+get_target() {
+    os=$(uname -o)
+
+    # If on OSX (Darwin) then the target is macosx
+    if [ os = "Darwin" ]; then
+        echo "macosx"
+    else # Otherwise we assume Linux
+        echo "linux"
     fi
 }
 
