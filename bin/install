@@ -11,7 +11,7 @@ install_lua() {
         local tmp_download_dir=$TMPDIR
     fi
 
-    local source_path=$(get_download_file_url $install_type $version $tmp_download_dir)
+    local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
 
     download_source $install_type $version $source_path
 
