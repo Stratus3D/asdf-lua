@@ -1,5 +1,5 @@
 # asdf-lua
- Lua plugin for asdf version manager https://github.com/HashNuke/asdf
+ Lua plugin for [asdf version manager](https://github.com/HashNuke/asdf) based off of scripts in my [dotfiles repository](https://github.com/Stratus3D/dotfiles)
 
 ## Install
 
@@ -20,6 +20,7 @@ Feel free to create an issue or pull request if you find a bug.
 * LuaRocks is not apart of installs
 * No support for LuaJIT
 * Lua versions 5.1 and earlier do not install
+*
 
 ## License
 MIT License
