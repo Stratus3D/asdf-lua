@@ -17,10 +17,8 @@ Feel free to create an issue or pull request if you find a bug.
 
 ## Issues
 
-* LuaRocks is not apart of installs
 * No support for LuaJIT
 * Lua versions 5.1 and earlier do not install
-*
 
 ## License
 MIT License
