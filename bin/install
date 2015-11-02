@@ -33,7 +33,7 @@ install_lua() {
         cp -r install/* $install_path || exit 1
 
         # If we are installing Lua 5.x or greater install LuaRocks as well
-        if version_5x $version; then
+        if version_5x_or_greater $version; then
             echo "Installing LuaRocks..."
             wget http://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz
             tar zxpf luarocks-2.2.2.tar.gz
@@ -135,11 +135,11 @@ get_target() {
     fi
 }
 
-version_5x() {
+version_5x_or_greater() {
      version=$1
      major_version=${version%.*.*}
 
-     if [ $major_version = '5' ]; then
+     if (( $major_version >= 5 )); then
          return 0
      else
          return 1
