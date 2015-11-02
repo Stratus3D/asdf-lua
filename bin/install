@@ -33,7 +33,7 @@ install_lua() {
         cp -r install/* $install_path || exit 1
 
         # If we are installing Lua 5.x or greater install LuaRocks as well
-        if [ $version =~ '5\..*' ]; then
+        if version_5x $version; then
             echo "Installing LuaRocks..."
             wget http://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz
             tar zxpf luarocks-2.2.2.tar.gz
@@ -78,10 +78,9 @@ untar_path() {
 
     if [ "${lua_type}" = "Lua" ]; then
         local dir_name="lua-${lua_version}"
+    elif [ "${lua_type}" = "LuaJIT" ]; then
+        local dir_name="luajit-${lua_version}"
     fi
-
-    # TODO for LuaJIT
-    # elif [ "${lua_type}" = "LuaJIT" ]; then
 
     echo "$tmp_download_dir/$dir_name"
 }
@@ -94,10 +93,10 @@ get_download_url() {
 
   if [ "${lua_type}" = "Lua" ]; then
     echo "http://www.lua.org/ftp/lua-${version}.tar.gz"
+  elif [ "${lua_type}" = "LuaJIT" ]; then
+    echo "http://luajit.org/download/LuaJIT-${version}.tar.gz"
   fi
 
-  # TODO for LuaJIT
-  # elif [ "${lua_type}" = "LuaJIT" ]; then
 }
 
 get_lua_version() {
@@ -134,6 +133,17 @@ get_target() {
     else # Otherwise we assume Linux
         echo "linux"
     fi
+}
+
+version_5x() {
+     version=$1
+     major_version=${version%.*.*}
+
+     if [ $major_version = '5' ]; then
+         return 0
+     else
+         return 1
+     fi
 }
 
 install_lua $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
