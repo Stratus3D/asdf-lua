@@ -30,7 +30,13 @@ install_lua() {
         make $target || exit 1
         make test || exit 1
         make local || exit 1
-        cp -r install/* $install_path || exit 1
+
+        # `make local` target changed in version 5x
+        if version_5_2x_or_greater $version; then
+            cp -r install/* $install_path || exit 1
+        else
+            cp -r * $install_path || exit 1
+        fi
 
         # If we are installing Lua 5.x or greater install LuaRocks as well
         if version_5x_or_greater $version; then
@@ -77,7 +83,11 @@ untar_path() {
     local lua_version=$(get_lua_version $version)
 
     if [ "${lua_type}" = "Lua" ]; then
-        local dir_name="lua-${lua_version}"
+        if version_5_1x_or_greater $version; then
+            local dir_name="lua-${lua_version}"
+        else
+            local dir_name="lua"
+        fi
     elif [ "${lua_type}" = "LuaJIT" ]; then
         local dir_name="luajit-${lua_version}"
     fi
@@ -137,9 +147,31 @@ get_target() {
 
 version_5x_or_greater() {
      version=$1
-     major_version=${version%.*.*}
+     IFS='.' read -a version_array <<< "$version"
+     major_version="${version_array[0]}"
 
      if (( $major_version >= 5 )); then
+         return 0
+     else
+         return 1
+     fi
+}
+
+version_5_1x_or_greater() {
+     version=$1
+     IFS='.' read -a version_array <<< "$version"
+     major_minor_version="${version_array[0]}0${version_array[1]}"
+     if (( $major_minor_version >= 501 )); then
+         return 0
+     else
+         return 1
+     fi
+}
+version_5_2x_or_greater() {
+     version=$1
+     IFS='.' read -a version_array <<< "$version"
+     major_minor_version="${version_array[0]}0${version_array[1]}"
+     if (( $major_minor_version >= 502 )); then
          return 0
      else
          return 1
