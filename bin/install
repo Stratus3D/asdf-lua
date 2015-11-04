@@ -27,15 +27,23 @@ install_lua() {
         target=$(get_target)
 
         # Build Lua
-        make $target || exit 1
-        make test || exit 1
-        make local || exit 1
+        if version_5x_or_greater $version; then
+            make $target || exit 1
+            make test || exit 1
+            make local || exit 1
+        else
+            make || exit 1
+            make install INSTALL_ROOT=install || exit 1
+        fi
 
         # `make local` target changed in version 5x
         if version_5_2x_or_greater $version; then
             cp -r install/* $install_path || exit 1
-        else
+        elif version_5x_or_greater $version; then
             cp -r * $install_path || exit 1
+        else
+            # We install version 4 and lesser in install/
+            cp -r install/* $install_path || exit 1
         fi
 
         # If we are installing Lua 5.x or greater install LuaRocks as well
