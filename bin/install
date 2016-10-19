@@ -18,10 +18,10 @@ install_lua() {
     # Running this in a subshell because we don't to disturb the current
     # working directory.
     (
-        cd $(dirname $source_path)
+        cd $(dirname $source_path) || exit 1
         tar zxvf $source_path || exit 1
 
-        cd $(untar_path $install_type $version $tmp_download_dir)
+        cd $(untar_path $install_type $version $tmp_download_dir) || exit 1
 
         # Target is OS-specific
         target=$(get_target)
