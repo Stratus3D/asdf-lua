@@ -4,6 +4,16 @@
 
 Lua plugin for [asdf version manager](https://github.com/HashNuke/asdf) based off of scripts in my [dotfiles repository](https://github.com/Stratus3D/dotfiles).
 
+## Dependencies
+
+* ANSI C compiler (like gcc).
+    * OSX
+        * `xcode-select --install`. Then install the "Command Line Tools" component from the dialog that appears.
+    * Debian
+        * `sudo apt-get install linux-headers-$(uname -r) build-essential`
+    * RedHat
+        * `sudo yum install devtoolset-2`
+
 ## Install
 
 ```
