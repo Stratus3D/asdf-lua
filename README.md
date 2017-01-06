@@ -40,7 +40,6 @@ Feel free to create an issue or pull request if you find a bug.
 
 ## Issues
 
-* No support for LuaJIT
 * Lua versions 4.0 and earlier do not install
 * No way to specify specify custom configuration options
 
