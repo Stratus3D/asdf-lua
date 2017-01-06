@@ -24,6 +24,8 @@ asdf plugin-add lua https://github.com/Stratus3D/asdf-lua.git
 
 Check the [asdf](https://github.com/HashNuke/asdf) readme for instructions on how to install & manage versions of Lua.
 
+You can also read my [Lua Version Management with asdf-lua](http://stratus3d.com/blog/2016/12/30/lua-version-management-with-asdf-lua/) article which has complete instructions on installation and usage.
+
 ## Development
 
 To modify this plugin into your `asdf` installation and see changes live, just create a symlink:
