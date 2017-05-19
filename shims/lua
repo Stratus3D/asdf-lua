@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+source $(dirname $(dirname $0))/lib/utils.sh
+
+run_lua() {
+    local plugin_name="lua"
+
+    local full_version=$(get_preset_version_for $plugin_name)
+
+    if [ "$full_version" == "" ]; then
+        echo "No version set for ${plugin_name}"
+        exit -1
+    fi
+
+    local short_lua_version=""
+    if [ "$full_version" != "system" ]; then
+      IFS='.' read -r -a splitted_version <<< "$full_version"
+      short_lua_version="${splitted_version[0]}.${splitted_version[1]}"
+    fi
+
+    local install_path="$(get_install_path lua version ${full_version})"
+    local package_path_override="package.path = package.path .. '"\
+";${install_path}/share/lua/${short_lua_version}/?.lua"\
+";${install_path}/share/lua/${short_lua_version}/?/init.lua"\
+";${install_path}/luarocks/share/lua/${short_lua_version}/?.lua"\
+";${install_path}/luarocks/share/lua/${short_lua_version}/?/init.lua"\
+"'"
+    local package_cpath_override="package.cpath = package.cpath .. '"\
+";${install_path}/lib/lua/${short_lua_version}/?.so"\
+";${install_path}/luarocks/lib/lua/${short_lua_version}/?.so"\
+"'"
+    exec $(asdf_dir)/bin/private/asdf-exec lua bin/lua -e "${package_path_override}" -e "${package_cpath_override}" "$@"
+}
+
+run_lua "$@"
