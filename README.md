@@ -9,6 +9,7 @@ Lua plugin for [asdf version manager](https://github.com/HashNuke/asdf) based of
 * ANSI C compiler (like gcc).
     * OSX
         * `xcode-select --install`. Then install the "Command Line Tools" component from the dialog that appears.
+        * `brew install wget`
     * Debian
         * `sudo apt-get install linux-headers-$(uname -r) build-essential`
     * RedHat
