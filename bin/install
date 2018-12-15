@@ -49,8 +49,8 @@ install_lua() {
         # If we are installing Lua 5.x or greater install LuaRocks as well
         if version_5x_or_greater $version; then
             echo "Installing LuaRocks..."
-            wget https://keplerproject.github.io/luarocks/releases/luarocks-2.4.1.tar.gz || exit 1
-            tar zxpf luarocks-2.4.1.tar.gz || exit 1
+            curl https://keplerproject.github.io/luarocks/releases/luarocks-2.4.1.tar.gz --output luarocks.tar.gz || exit 1
+            tar zxpf luarocks.tar.gz || exit 1
             cd luarocks-2.4.1 || exit 1
             ./configure --with-lua=$install_path --prefix=$install_path/luarocks || exit 1
             make bootstrap || exit 1
