@@ -3,7 +3,7 @@
 plugin_name="lua"
 
 install_path="$(asdf where lua)"
-full_version="$( echo $install_path | rev | cut -d/ -f1)"
+full_version="$( echo $install_path | rev | cut -d/ -f1 | rev)"
 
 short_lua_version=""
 
