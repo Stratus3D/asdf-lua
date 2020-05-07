@@ -110,9 +110,9 @@ get_download_url() {
   local lua_type=$(get_lua_type $version)
 
   if [ "${lua_type}" = "Lua" ]; then
-    echo "http://www.lua.org/ftp/lua-${version}.tar.gz"
+    echo "https://www.lua.org/ftp/lua-${version}.tar.gz"
   elif [ "${lua_type}" = "LuaJIT" ]; then
-    echo "http://luajit.org/download/LuaJIT-${version}.tar.gz"
+    echo "https://luajit.org/download/LuaJIT-${version}.tar.gz"
   fi
 
 }
