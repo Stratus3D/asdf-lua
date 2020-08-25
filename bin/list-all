@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Unoffical Bash "strict mode"
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+#ORIGINAL_IFS=$IFS
+IFS=$'\t\n' # Stricter IFS settings
+
 # Each of these values can be used to build the url to the archive containing
 # the source code for each version
 # (e.g. http://www.lua.org/ftp/lua-<version_name>.tar.gz)
