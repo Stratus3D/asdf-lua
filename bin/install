@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Unoffical Bash "strict mode"
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+#ORIGINAL_IFS=$IFS
+IFS=$'\t\n' # Stricter IFS settings
+
 install_lua() {
     local install_type=$1
     local version=$2
