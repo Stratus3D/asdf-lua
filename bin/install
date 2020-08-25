@@ -11,7 +11,7 @@ install_lua() {
     local version=$2
     local install_path=$3
 
-    if [ "$TMPDIR" = "" ]; then
+    if [ "${TMPDIR:-}" = "" ]; then
         local tmp_download_dir=$(mktemp -d -t lua_build_XXXXXX)
     else
         local tmp_download_dir=${TMPDIR%/}
