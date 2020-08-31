@@ -29,3 +29,34 @@ get_lua_type() {
         echo "Lua"
     fi
 }
+
+get_lua_version() {
+    IFS='-' read -a version_info <<< "$1"
+
+    if [ "${version_info[0]}" = "LuaJIT" ]; then
+        # TODO LuaJIT
+        echo "${version_info[1]}-${version_info[2]}"
+    else
+        # Lua
+        if [ "${#version_info[@]}" -eq 1 ]; then
+            echo "${version_info[0]}"
+        else
+            echo "${version_info[0]}-${version_info[1]}"
+        fi
+    fi
+}
+
+get_download_file_path() {
+    local install_type=$1
+    local version=$2
+    local tmp_download_dir=$3
+
+    local lua_type=$(get_lua_type $version)
+    local lua_version=$(get_lua_version $version)
+
+    if [ "${lua_type}" = "Lua" ]; then
+        local pkg_name="lua-${lua_version}.tar.gz"
+    fi
+
+    echo "$tmp_download_dir/$pkg_name"
+}
