@@ -6,28 +6,40 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
+# shellcheck source=../lib/utils.sh
+source "$(dirname "$0")/../lib/utils.sh"
+
 install_lua() {
     local install_type=$1
     local version=$2
     local install_path=$3
+    local download_path=$4
 
-    if [ "${TMPDIR:-}" = "" ]; then
+    # If download path is not set
+    if [ -z "$download_path" ]; then
+      if [ "${TMPDIR:-}" = "" ]; then
         local tmp_download_dir=$(mktemp -d -t lua_build_XXXXXX)
-    else
+      else
         local tmp_download_dir=${TMPDIR%/}
+      fi
+
+      local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
+
+      download_source $install_type $version $source_path
+
+      download_path="$source_path"
+    else
+      download_path=$(get_download_file_path $install_type $version $download_path)
     fi
-
-    local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
-
-    download_source $install_type $version $source_path
 
     # Running this in a subshell because we don't to disturb the current
     # working directory.
     (
-        cd $(dirname $source_path) || exit 1
-        tar zxvf $source_path || exit 1
+        cd $(dirname $download_path)
+        tar zxvf "$download_path"
+        download_dir=$(dirname $download_path)
 
-        cd $(untar_path $install_type $version $tmp_download_dir) || exit 1
+        cd $(untar_path $install_type $version $download_dir) || exit 1
 
         # Target is OS-specific
         target=$(get_target)
@@ -64,30 +76,6 @@ install_lua() {
     )
 }
 
-download_source() {
-    local install_type=$1
-    local version=$2
-    local download_path=$3
-    local download_url=$(get_download_url $install_type $version)
-
-    curl -Lo $download_path -C - $download_url
-}
-
-get_download_file_path() {
-    local install_type=$1
-    local version=$2
-    local tmp_download_dir=$3
-
-    local lua_type=$(get_lua_type $version)
-    local lua_version=$(get_lua_version $version)
-
-    if [ "${lua_type}" = "Lua" ]; then
-        local pkg_name="lua-${lua_version}.tar.gz"
-    fi
-
-    echo "$tmp_download_dir/$pkg_name"
-}
-
 untar_path() {
     local install_type=$1
     local version=$2
@@ -107,45 +95,6 @@ untar_path() {
     fi
 
     echo "$tmp_download_dir/$dir_name"
-}
-
-get_download_url() {
-  local install_type=$1
-  local version=$2
-
-  local lua_type=$(get_lua_type $version)
-
-  if [ "${lua_type}" = "Lua" ]; then
-    echo "https://www.lua.org/ftp/lua-${version}.tar.gz"
-  elif [ "${lua_type}" = "LuaJIT" ]; then
-    echo "https://luajit.org/download/LuaJIT-${version}.tar.gz"
-  fi
-
-}
-
-get_lua_version() {
-    IFS='-' read -a version_info <<< "$1"
-
-    if [ "${version_info[0]}" = "LuaJIT" ]; then
-        # TODO LuaJIT
-        echo "${version_info[1]}-${version_info[2]}"
-    else
-        # Lua
-        if [ "${#version_info[@]}" -eq 1 ]; then
-            echo "${version_info[0]}"
-        else
-            echo "${version_info[0]}-${version_info[1]}"
-        fi
-    fi
-}
-
-get_lua_type() {
-    IFS='-' read -a version_info <<< "$1"
-    if [ "${version_info[0]}" = "LuaJIT" ]; then
-        echo "LuaJIT"
-    else
-        echo "Lua"
-    fi
 }
 
 get_target() {
@@ -192,4 +141,4 @@ version_5_2x_or_greater() {
      fi
 }
 
-install_lua $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
+install_lua $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH $ASDF_DOWNLOAD_PATH
