@@ -103,7 +103,7 @@ get_target() {
     # If on OSX (Darwin) then the target is macosx
     if [ $os = "Darwin" ]; then
         echo "macosx"
-    elif [ "$ASDF_LUA_LINUX_READLINE" == "1" ]; then
+    elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
         echo "linux-readline"
     else # Otherwise we assume Linux
         echo "linux"
