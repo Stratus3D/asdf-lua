@@ -39,6 +39,7 @@ versions_list=(
     5.3.5
     5.4.0
     5.4.2
+    5.4.3
 )
 
 versions=""
