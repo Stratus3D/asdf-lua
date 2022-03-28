@@ -66,7 +66,8 @@ install_lua() {
 
         # If we are installing Lua 5.x or greater install LuaRocks as well
         if version_5x_or_greater $version; then
-            local luarocks_version=$(get_latest_luarocks_version)
+            local luarocks_version
+            luarocks_version=${ASDF_LUA_LUAROCKS_VERSION:-$(get_latest_luarocks_version)}
             local luarocks_name=luarocks-$luarocks_version
             echo "Installing LuaRocks v${luarocks_version}..."
             curl -L "https://luarocks.org/releases/${luarocks_name}.tar.gz" --output luarocks.tar.gz || exit 1
