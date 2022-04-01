@@ -60,3 +60,8 @@ get_download_file_path() {
 
     echo "$tmp_download_dir/$pkg_name"
 }
+
+get_latest_luarocks_version() {
+    curl -sL "https://api.github.com/repos/luarocks/luarocks/tags?per_page=1&page=1" |
+        grep '"name"' | cut -d\" -f4 | cut -c2-
+}
