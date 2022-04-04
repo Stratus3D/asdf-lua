@@ -1,18 +1,18 @@
 download_source() {
-    local install_type=$1
-    local version=$2
-    local download_path=$3
-    local download_url=$(get_download_url $install_type $version)
+    local install_type="$1"
+    local version="$2"
+    local download_path="$3"
+    local download_url="$(get_download_url "$install_type" "$version")"
 
-    curl -Lo $download_path -C - $download_url
+    curl -Lo "$download_path" -C - "$download_url"
 }
 
 
 get_download_url() {
-  local install_type=$1
-  local version=$2
+  local install_type="$1"
+  local version="$2"
 
-  local lua_type=$(get_lua_type $version)
+  local lua_type="$(get_lua_type "$version")"
 
   if [ "${lua_type}" = "Lua" ]; then
     echo "https://www.lua.org/ftp/lua-${version}.tar.gz"
@@ -47,12 +47,12 @@ get_lua_version() {
 }
 
 get_download_file_path() {
-    local install_type=$1
-    local version=$2
-    local tmp_download_dir=$3
+    local install_type="$1"
+    local version="$2"
+    local tmp_download_dir="$3"
 
-    local lua_type=$(get_lua_type $version)
-    local lua_version=$(get_lua_version $version)
+    local lua_type="$(get_lua_type "$version")"
+    local lua_version="$(get_lua_version "$version")"
 
     if [ "${lua_type}" = "Lua" ]; then
         local pkg_name="lua-${lua_version}.tar.gz"
