@@ -26,6 +26,12 @@ Check the [asdf](https://github.com/HashNuke/asdf) readme for instructions on ho
 
 You can also read my [Lua Version Management with asdf-lua](http://stratus3d.com/blog/2016/12/30/lua-version-management-with-asdf-lua/) article which has complete instructions on installation and usage.
 
+## Options
+
+### Linux Readline
+
+If you are installing Lua 5.4.x or greater on linux by default Lua will be compiled without readline. You can override this behavior by setting `ASDF_LUA_LINUX_READLINE=1` before running `asdf install`.
+
 ## Development
 
 To modify this plugin into your `asdf` installation and see changes live, just create a symlink:
