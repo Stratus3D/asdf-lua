@@ -30,7 +30,7 @@ You can also read my [Lua Version Management with asdf-lua](http://stratus3d.com
 
 ### Linux Readline
 
-If you are installing Lua 5.4.x or greater on linux by default Lua will be compiled without readline. You can override this behavior by setting `ASDF_LUA_LINUX_READLINE=1` before running `asdf install`.
+If you are installing Lua 5.4.x or greater on linux by default Lua will be compiled without readline. You can override this behavior by setting `ASDF_LUA_LINUX_READLINE=1` before running `asdf install`. See this thread for the details - http://lua-users.org/lists/lua-l/2020-07/msg00363.html
 
 ## Development
 
