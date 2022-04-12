@@ -53,4 +53,4 @@ do
 done
 
 # Print out the versions
-echo $versions
+echo "$versions"
