@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-plugin_name="lua"
-
-full_version="$( echo $ASDF_INSTALL_PATH | rev | cut -d/ -f1 | rev)"
+full_version="$( echo "$ASDF_INSTALL_PATH" | rev | cut -d/ -f1 | rev)"
 
 short_lua_version=""
 

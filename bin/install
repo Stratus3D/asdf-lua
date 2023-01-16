@@ -6,7 +6,7 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=../lib/utils.sh
+# shellcheck source=lib/utils.sh
 source "$(dirname "$0")/../lib/utils.sh"
 
 install_lua() {
@@ -14,16 +14,18 @@ install_lua() {
     local version="$2"
     local install_path="$3"
     local download_path="$4"
+    local source_path
+    local tmp_download_dir
 
     # If download path is not set
     if [ -z "$download_path" ]; then
       if [ "${TMPDIR:-}" = "" ]; then
-        local tmp_download_dir="$(mktemp -d -t lua_build_XXXXXX)"
+        tmp_download_dir="$(mktemp -d -t lua_build_XXXXXX)"
       else
-        local tmp_download_dir="${TMPDIR%/}"
+        tmp_download_dir="${TMPDIR%/}"
       fi
 
-      local source_path="$(get_download_file_path "$install_type" "$version" "$tmp_download_dir")"
+      source_path="$(get_download_file_path "$install_type" "$version" "$tmp_download_dir")"
 
       download_source "$install_type" "$version" "$source_path"
 
@@ -58,7 +60,7 @@ install_lua() {
         if version_5_2x_or_greater "$version"; then
             cp -r install/* "$install_path" || exit 1
         elif version_5x_or_greater "$version"; then
-            cp -r * "$install_path" || exit 1
+            cp -r ./* "$install_path" || exit 1
         else
             # We install version 4 and lesser in install/
             cp -r install/* "$install_path" || exit 1
@@ -83,9 +85,11 @@ untar_path() {
     local install_type="$1"
     local version="$2"
     local tmp_download_dir="$3"
+    local lua_type
+    local lua_version
 
-    local lua_type="$(get_lua_type "$version")"
-    local lua_version="$(get_lua_version "$version")"
+    lua_type="$(get_lua_type "$version")"
+    lua_version="$(get_lua_version "$version")"
 
     if [ "${lua_type}" = "Lua" ]; then
         if version_5_1x_or_greater "$version"; then
@@ -104,7 +108,7 @@ get_target() {
     os="$(uname -s)"
 
     # If on OSX (Darwin) then the target is macosx
-    if [ $os = "Darwin" ]; then
+    if [ "$os" = "Darwin" ]; then
         echo "macosx"
     elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
         echo "linux-readline"
@@ -115,7 +119,7 @@ get_target() {
 
 version_5x_or_greater() {
      version="$1"
-     IFS='.' read -a version_array <<< "$version"
+     IFS='.' read -ra version_array <<< "$version"
      major_version="${version_array[0]}"
 
      if (( "$major_version" >= 5 )); then
@@ -127,7 +131,7 @@ version_5x_or_greater() {
 
 version_5_1x_or_greater() {
      version="$1"
-     IFS='.' read -a version_array <<< "$version"
+     IFS='.' read -ra version_array <<< "$version"
      major_minor_version="${version_array[0]}0${version_array[1]}"
      if (( "$major_minor_version" >= 501 )); then
          return 0
@@ -137,7 +141,7 @@ version_5_1x_or_greater() {
 }
 version_5_2x_or_greater() {
      version=$1
-     IFS='.' read -a version_array <<< "$version"
+     IFS='.' read -ra version_array <<< "$version"
      major_minor_version="${version_array[0]}0${version_array[1]}"
      if (( "$major_minor_version" >= 502 )); then
          return 0

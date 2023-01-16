@@ -6,7 +6,7 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=../lib/utils.sh
+# shellcheck source=lib/utils.sh
 source "$(dirname "$0")/../lib/utils.sh"
 
 archive_file_path="$(get_download_file_path "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH")"
