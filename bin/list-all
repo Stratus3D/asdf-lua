@@ -11,45 +11,44 @@ IFS=$'\t\n' # Stricter IFS settings
 # (e.g. http://www.lua.org/ftp/lua-<version_name>.tar.gz)
 
 versions_list=(
-    #1.1
-    #2.2
-    #2.4
-    #2.5
-    #3.0
-    #3.1
-    #3.2
-    #4.0
-    # TODO: Add support for earlier versions
-    5.1
-    5.1.1
-    5.1.2
-    5.1.3
-    5.1.4
-    5.1.5
-    5.2.0
-    5.2.1
-    5.2.2
-    5.2.3
-    5.2.4
-    5.3.0
-    5.3.1
-    5.3.2
-    5.3.3
-    5.3.4
-    5.3.5
-    5.3.6
-    5.4.0
-    5.4.2
-    5.4.3
-    5.4.4
+  #1.1
+  #2.2
+  #2.4
+  #2.5
+  #3.0
+  #3.1
+  #3.2
+  #4.0
+  # TODO: Add support for earlier versions
+  5.1
+  5.1.1
+  5.1.2
+  5.1.3
+  5.1.4
+  5.1.5
+  5.2.0
+  5.2.1
+  5.2.2
+  5.2.3
+  5.2.4
+  5.3.0
+  5.3.1
+  5.3.2
+  5.3.3
+  5.3.4
+  5.3.5
+  5.3.6
+  5.4.0
+  5.4.2
+  5.4.3
+  5.4.4
 )
 
 versions=""
 
 # Concatenate all the versions together separated by spaces
-for version in "${versions_list[@]}"
-do
-      versions="${versions} ${version}"
+for version in "${versions_list[@]}"; do
+  versions="${versions} ${version}"
 done
 
 # Print out the versions
