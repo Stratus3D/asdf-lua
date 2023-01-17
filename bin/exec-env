@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-plugin_name="lua"
-
-full_version="$( echo $ASDF_INSTALL_PATH | rev | cut -d/ -f1 | rev)"
+full_version="$(echo "$ASDF_INSTALL_PATH" | rev | cut -d/ -f1 | rev)"
 
 short_lua_version=""
 
 if [ "$full_version" != "system" ]; then
-	IFS='.' read -r -a splitted_version <<< "$full_version"
-	short_lua_version="${splitted_version[0]}.${splitted_version[1]}"
+  IFS='.' read -r -a splitted_version <<<"$full_version"
+  short_lua_version="${splitted_version[0]}.${splitted_version[1]}"
 fi
 
 package_path_override="package.path = package.path .. '\
