@@ -112,8 +112,8 @@ get_target() {
     echo "macosx"
   elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
     echo "linux-readline"
-  else # Otherwise we assume Linux
-    echo "linux"
+  else # Otherwise let the lua Makefile guess for us
+    echo "guess"
   fi
 }
 
