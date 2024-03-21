@@ -19,6 +19,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        version:
+          - 5.1.5
+          - 5.2.4
+          - 5.3.6
+          - 5.4.6
         os:
           - macos-latest
           - ubuntu-latest
@@ -41,6 +46,7 @@ jobs:
         uses: asdf-vm/actions/plugin-test@v1
         with:
           command: lua -v
+          version: ${{ matrix.version }}
 
   lint:
     runs-on: ubuntu-latest
