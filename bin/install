@@ -113,7 +113,11 @@ get_target() {
   elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
     echo "linux-readline"
   else # Otherwise let the lua Makefile guess for us
-    echo "guess"
+    if less_than_version_5_4x "$version"; then
+      echo "linux"
+    else
+      echo "guess"
+    fi
   fi
 }
 
@@ -144,6 +148,17 @@ version_5_2x_or_greater() {
   IFS='.' read -ra version_array <<<"$version"
   major_minor_version="${version_array[0]}0${version_array[1]}"
   if (("$major_minor_version" >= 502)); then
+    return 0
+  else
+    return 1
+  fi
+}
+
+less_than_version_5_4x() {
+  version=$1
+  IFS='.' read -ra version_array <<<"$version"
+  major_minor_version="${version_array[0]}0${version_array[1]}"
+  if (("$major_minor_version" < 504)); then
     return 0
   else
     return 1
