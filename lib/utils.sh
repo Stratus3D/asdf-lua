@@ -71,6 +71,10 @@ get_download_file_path() {
 }
 
 get_latest_luarocks_version() {
-  curl -sL "https://api.github.com/repos/luarocks/luarocks/tags?per_page=1&page=1" |
+  curl_opts=(-fsSL)
+  if [ -n "${GITHUB_API_TOKEN:-}" ]; then
+    curl_opts=("${curl_opts[@]}" -H "Authorization: token ${GITHUB_API_TOKEN}")
+  fi
+  curl "${curl_opts[@]}" "https://api.github.com/repos/luarocks/luarocks/tags?per_page=1&page=1" |
     grep '"name"' | cut -d\" -f4 | cut -c2-
 }
