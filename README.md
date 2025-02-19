@@ -18,7 +18,7 @@ Lua plugin for [asdf version manager](https://github.com/HashNuke/asdf) based of
 ## Install
 
 ```
-asdf plugin-add lua https://github.com/Stratus3D/asdf-lua.git
+asdf plugin add lua https://github.com/Stratus3D/asdf-lua.git
 ```
 
 ## Use
