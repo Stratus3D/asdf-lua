@@ -37,7 +37,7 @@ jobs:
 
       - name: Install system packages on Ubuntu
         if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install curl readline
+        run: sudo apt-get install curl libreadline-dev
 
       - name: Install system packages on macOS
         if: ${{ runner.os == 'macOS' }}
