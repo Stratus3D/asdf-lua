@@ -74,8 +74,10 @@ install_lua() {
       echo "Installing LuaRocks v${luarocks_version}..."
       curl -L "https://luarocks.org/releases/${luarocks_name}.tar.gz" --output luarocks.tar.gz || exit 1
       tar zxpf luarocks.tar.gz || exit 1
+      cd "${luarocks_name}" || exit 1
 
-      # clean the environment first and use make install instead of bootstrap to install lua rocks
+      # Create luarocks directory and configure
+      mkdir -p "$install_path/luarocks" || exit 1
       ./configure --with-lua="$install_path" --prefix="$install_path/luarocks" || exit 1
       make build || exit 1
       make install || exit 1
