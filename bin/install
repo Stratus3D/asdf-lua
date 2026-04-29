@@ -44,10 +44,16 @@ install_lua() {
     cd "$(untar_path "$install_type" "$version" "$download_dir")" || exit 1
 
     # Target is OS-specific
-    target="$(get_target)"
+    target="$(get_target "$version")"
 
-    # Build Lua
-    if version_5x_or_greater "$version"; then
+    # Build Lua or LuaJIT
+    local lua_type
+    lua_type="$(get_lua_type "$version")"
+
+    if [ "${lua_type}" = "LuaJIT" ]; then
+      make || exit 1
+      make install PREFIX="$install_path" || exit 1
+    elif version_5x_or_greater "$version"; then
       make "$target" || exit 1
       make test || exit 1
       make local || exit 1
@@ -56,18 +62,21 @@ install_lua() {
       make install INSTALL_ROOT=install || exit 1
     fi
 
-    # `make local` target changed in version 5x
-    if version_5_2x_or_greater "$version"; then
-      cp -r install/* "$install_path" || exit 1
-    elif version_5x_or_greater "$version"; then
-      cp -r ./* "$install_path" || exit 1
-    else
-      # We install version 4 and lesser in install/
-      cp -r install/* "$install_path" || exit 1
+    # Copy files for regular Lua only (LuaJIT installs directly)
+    if [ "${lua_type}" != "LuaJIT" ]; then
+      # `make local` target changed in version 5x
+      if version_5_2x_or_greater "$version"; then
+        cp -r install/* "$install_path" || exit 1
+      elif version_5x_or_greater "$version"; then
+        cp -r ./* "$install_path" || exit 1
+      else
+        # We install version 4 and lesser in install/
+        cp -r install/* "$install_path" || exit 1
+      fi
     fi
 
-    # If we are installing Lua 5.x or greater install LuaRocks as well
-    if version_5x_or_greater "$version"; then
+    # If we are installing Lua 5.x or greater install LuaRocks as well (not for LuaJIT)
+    if [ "${lua_type}" != "LuaJIT" ] && version_5x_or_greater "$version"; then
       local luarocks_version
       luarocks_version="${ASDF_LUA_LUAROCKS_VERSION:-$(get_latest_luarocks_version)}"
       local luarocks_name="luarocks-$luarocks_version"
@@ -103,20 +112,28 @@ untar_path() {
       local dir_name="lua"
     fi
   elif [ "${lua_type}" = "LuaJIT" ]; then
-    local dir_name="luajit-${lua_version}"
+    local dir_name="LuaJIT-${lua_version}"
   fi
 
   echo "$tmp_download_dir/$dir_name"
 }
 
 get_target() {
+  local version="$1"
+  local os
+  local lua_type
+
   os="$(uname -s)"
+  lua_type="$(get_lua_type "$version")"
 
   # If on OSX (Darwin) then the target is macosx
   if [ "$os" = "Darwin" ]; then
     echo "macosx"
   elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
     echo "linux-readline"
+  elif [ "${lua_type}" = "LuaJIT" ]; then
+    # LuaJIT doesn't use targets like regular Lua
+    echo ""
   else # Otherwise let the lua Makefile guess for us
     if less_than_version_5_4x "$version"; then
       echo "linux"

@@ -47,6 +47,15 @@ versions_list=(
   5.4.7
   5.4.8
   5.5.0
+  # LuaJIT versions
+  LuaJIT-2.0.1
+  LuaJIT-2.0.2
+  LuaJIT-2.0.3
+  LuaJIT-2.0.4
+  LuaJIT-2.0.5
+  LuaJIT-2.1.0-beta1
+  LuaJIT-2.1.0-beta2
+  LuaJIT-2.1.0-beta3
 )
 
 versions=""

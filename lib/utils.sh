@@ -24,7 +24,9 @@ get_download_url() {
   if [ "${lua_type}" = "Lua" ]; then
     echo "https://www.lua.org/ftp/lua-${version}.tar.gz"
   elif [ "${lua_type}" = "LuaJIT" ]; then
-    echo "https://luajit.org/download/LuaJIT-${version}.tar.gz"
+    local lua_version
+    lua_version="$(get_lua_version "$version")"
+    echo "https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${lua_version}.tar.gz"
   fi
 }
 
@@ -38,18 +40,14 @@ get_lua_type() {
 }
 
 get_lua_version() {
-  IFS='-' read -ra version_info <<<"$1"
+  local version="$1"
 
-  if [ "${version_info[0]}" = "LuaJIT" ]; then
-    # TODO LuaJIT
-    echo "${version_info[1]}-${version_info[2]}"
+  if [[ "$version" == LuaJIT-* ]]; then
+    # For LuaJIT, remove the "LuaJIT-" prefix
+    echo "${version#LuaJIT-}"
   else
-    # Lua
-    if [ "${#version_info[@]}" -eq 1 ]; then
-      echo "${version_info[0]}"
-    else
-      echo "${version_info[0]}-${version_info[1]}"
-    fi
+    # For regular Lua, return as-is
+    echo "$version"
   fi
 }
 
@@ -65,6 +63,8 @@ get_download_file_path() {
 
   if [ "${lua_type}" = "Lua" ]; then
     local pkg_name="lua-${lua_version}.tar.gz"
+  else
+    local pkg_name="v${lua_version}.tar.gz"
   fi
 
   echo "$tmp_download_dir/$pkg_name"
