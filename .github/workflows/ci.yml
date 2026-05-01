@@ -29,8 +29,11 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
+          - ubuntu-24.04-arm
         exclude:
           - os: macos-latest
+            version: LuaJIT-2.0.5
+          - os: ubuntu-24.04-arm
             version: LuaJIT-2.0.5
 
     runs-on: ${{ matrix.os }}
