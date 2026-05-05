@@ -75,6 +75,15 @@ install_lua() {
       fi
     fi
 
+    # Create liblualib.a -> liblua.a symlink for Lua 5.1+ (liblualib was merged into
+    # liblua in Lua 5.1; gems that still link -llualib will fail without this).
+    # Only created if liblua.a exists and liblualib.a is not already provided.
+    if [ "${lua_type}" != "LuaJIT" ] && version_5_1x_or_greater "$version"; then
+      if [ -f "${install_path}/lib/liblua.a" ] && [ ! -e "${install_path}/lib/liblualib.a" ]; then
+        ln -sf "${install_path}/lib/liblua.a" "${install_path}/lib/liblualib.a"
+      fi
+    fi
+
     # If we are installing Lua 5.x or greater install LuaRocks as well (not for LuaJIT)
     if [ "${lua_type}" != "LuaJIT" ] && version_5x_or_greater "$version"; then
       local luarocks_version
