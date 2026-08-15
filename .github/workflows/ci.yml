@@ -55,6 +55,7 @@ jobs:
         with:
           command: lua -v
           version: ${{ matrix.version }}
+          plugin_path: ${{ github.workspace }}
 
   lint:
     runs-on: ubuntu-latest
