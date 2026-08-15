@@ -134,12 +134,10 @@ get_target() {
   elif [ "${lua_type}" = "LuaJIT" ]; then
     # LuaJIT doesn't use targets like regular Lua
     echo ""
-  else # Otherwise let the lua Makefile guess for us
-    if less_than_version_5_4x "$version"; then
-      echo "linux"
-    else
-      echo "guess"
-    fi
+  elif [ "$os" = "Linux" ]; then
+    echo "linux"
+  else
+    echo "guess"
   fi
 }
 
