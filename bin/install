@@ -129,17 +129,16 @@ get_target() {
   # If on OSX (Darwin) then the target is macosx
   if [ "$os" = "Darwin" ]; then
     echo "macosx"
-  elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ]; then
+  # Readline is required for 5.1 - 5.3, optional for 5.4, and dynamically included for 5.5
+  elif [ "${ASDF_LUA_LINUX_READLINE-}" == "1" ] && version_5_4_x "$version"; then
     echo "linux-readline"
   elif [ "${lua_type}" = "LuaJIT" ]; then
     # LuaJIT doesn't use targets like regular Lua
     echo ""
-  else # Otherwise let the lua Makefile guess for us
-    if less_than_version_5_4x "$version"; then
-      echo "linux"
-    else
-      echo "guess"
-    fi
+  elif [ "$os" = "Linux" ]; then
+    echo "linux"
+  else
+    echo "guess"
   fi
 }
 
@@ -176,11 +175,11 @@ version_5_2x_or_greater() {
   fi
 }
 
-less_than_version_5_4x() {
+version_5_4_x() {
   version=$1
   IFS='.' read -ra version_array <<<"$version"
   major_minor_version="${version_array[0]}0${version_array[1]}"
-  if (("$major_minor_version" < 504)); then
+  if (("$major_minor_version" >= 504)) && (("$major_minor_version" < 505)); then
     return 0
   else
     return 1
