@@ -31,12 +31,11 @@ You can also read my [Lua Version Management with asdf-lua](http://stratus3d.com
 
 ### Linux Readline
 
-If you are installing Lua 5.4.x on Linux, Lua will be compiled without
-readline.
+Readline support varies by Lua version:
 
-You can override this behavior by setting `ASDF_LUA_LINUX_READLINE=1` before running `asdf install`.
-
-(See this thread for the details - http://lua-users.org/lists/lua-l/2020-07/msg00363.html)
+- **5.1 - 5.3**: Readline is required (build fails without libreadline-dev installed)
+- **5.4**: Readline is optional and disabled by default. Enable by setting `ASDF_LUA_LINUX_READLINE=1` before running `asdf install`. See http://lua-users.org/lists/lua-l/2020-07/msg00363.html for details.
+- **5.5+**: Readline is loaded dynamically at runtime if available
 
 ## Development
 
