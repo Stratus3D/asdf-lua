@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\t\n'
+
+os="$(uname -s)"
+
+if [ "$os" = "Darwin" ]; then
+  cat <<EOF
+xcode-select
+EOF
+elif [ "$os" = "Linux" ]; then
+  if command -v apt-get >/dev/null 2>&1; then
+    cat <<EOF
+build-essential
+linux-headers
+libreadline-dev
+EOF
+  elif command -v yum >/dev/null 2>&1; then
+    cat <<EOF
+devtoolset-2
+readline-devel
+EOF
+  else
+    cat <<EOF
+gcc
+make
+readline-devel
+EOF
+  fi
+else
+  cat <<EOF
+gcc
+make
+EOF
+fi

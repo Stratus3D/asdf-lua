@@ -10,6 +10,6 @@ fmt:
 	shfmt --language-dialect bash --indent 2 --write bin/*
 
 lint:
-	shellcheck --shell bash --external-sources bin/*
+	shellcheck --shell bash bin/* lib/*
 
 .PHONY: precommit test test_luajit lint
