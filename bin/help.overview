@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\t\n'
+
+version="${ASDF_INSTALL_VERSION:-}"
+lua_type="Lua"
+
+if [ -n "$version" ]; then
+  if [[ "$version" == LuaJIT-* ]]; then
+    lua_type="LuaJIT"
+  fi
+fi
+
+if [ "$lua_type" = "LuaJIT" ]; then
+  cat <<EOF
+LuaJIT is a Just-In-Time Compiler for the Lua programming language. It combines a high-speed interpreter with a state-of-the-art JIT compiler, making it one of the fastest dynamic language implementations. LuaJIT is compatible with Lua 5.1 API and includes the FFI library for calling C functions and manipulating C data structures.
+EOF
+else
+  cat <<EOF
+Lua is a powerful, efficient, lightweight, embeddable scripting language. It supports procedural, object-oriented, functional, data-driven, and data description programming styles. Lua is dynamically typed, runs by interpreting bytecode with a register-based virtual machine, and has automatic memory management with incremental garbage collection.
+EOF
+fi

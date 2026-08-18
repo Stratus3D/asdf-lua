@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\t\n'
+
+version="${ASDF_INSTALL_VERSION:-}"
+lua_type="Lua"
+
+if [ -n "$version" ]; then
+  if [[ "$version" == LuaJIT-* ]]; then
+    lua_type="LuaJIT"
+  fi
+fi
+
+if [ "$lua_type" = "LuaJIT" ]; then
+  cat <<EOF
+LuaJIT Homepage: https://luajit.org
+LuaJIT Repository: https://github.com/LuaJIT/LuaJIT
+Download: https://luajit.org/download.html
+Documentation: https://luajit.org/luajit.html
+Mailing List: https://luajit.org/list.html
+EOF
+else
+  cat <<EOF
+Lua Homepage: https://www.lua.org
+Documentation: https://www.lua.org/docs.html
+Reference Manual: https://www.lua.org/manual/5.5/
+Getting Started: https://www.lua.org/start.html
+Download: https://www.lua.org/download.html
+Mailing List: https://www.lua.org/lua-l.html
+Community: https://www.lua.org/community.html
+EOF
+fi
+
+cat <<EOF
+Plugin Repository: https://github.com/Stratus3D/asdf-lua
+LuaRocks: https://luarocks.org
+EOF
